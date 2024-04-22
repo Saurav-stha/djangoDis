@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+
+
+{% block content %}
+ 
+<h1>HOME PAGEA</h1>
+
+<div>
+    
+    <div>
+        {% for server in servers %}
+        
+        <div>
+            <h4>{{ server.id }} -- {{ server.name }}</h4>
+        </div>
+        
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock content %}
