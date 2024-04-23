@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('',views.home, name="home"),
-    path('server/',views.server , name="server"),
+    path('server/<str:sid>/',views.server , name="server"),
 ]

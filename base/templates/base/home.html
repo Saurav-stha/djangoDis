@@ -11,7 +11,7 @@
         {% for server in servers %}
         
         <div>
-            <h4>{{ server.id }} -- {{ server.name }}</h4>
+            <h4>{{ server.id }} -- <a href="{% url 'server' server.id %}"> {{ server.name }} </a></h4>
         </div>
         
         {% endfor %}
