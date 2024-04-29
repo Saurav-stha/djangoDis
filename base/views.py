@@ -23,3 +23,7 @@ def server(request,sid):
 
     context = {'server': server}
     return render(request, 'base/server.html' , context)
+
+def createServer(request):
+    context = {}
+    return render(request , 'base/server_topic.html', context)
