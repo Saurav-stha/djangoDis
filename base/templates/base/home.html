@@ -13,6 +13,8 @@
         {% for server in servers %}
         
         <div>
+            <a href="{% url 'update-server' server.id %}">Edit</a>
+            <a href="{% url 'delete-server' server.id %}">Delete</a>
             <span>@{{ server.owner.username }}</span>
             <h4>{{ server.id }} -- <a href="{% url 'server' server.id %}"> {{ server.name }} </a></h4>
             <small>{{ server.topic }}</small>
