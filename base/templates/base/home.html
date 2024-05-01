@@ -2,26 +2,52 @@
 
 
 {% block content %}
+
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</style>
  
-<h1>HOME PAGEA</h1>
+<!-- <h1>HOME PAGEA</h1> -->
 
-<div>
+<div class="home-container">
 
-    <a href="{% url 'create-server' %}">Create Server</a>
-    
     <div>
-        {% for server in servers %}
+        <h2>Browse</h2>
+        <hr>
+
+        <div>   
+            <a href="{% url 'home' %}">All</a>
+        </div>
+        {% for topic in topics %}
+        <div>   
+            <a href="{% url 'home' %}?nam={{topic.name}}">{{ topic.name }}</a>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div>
+        <h5>{{server_count}} servers found </h5>
+        <a href="{% url 'create-server' %}">Create Server</a>
         
         <div>
-            <a href="{% url 'update-server' server.id %}">Edit</a>
-            <a href="{% url 'delete-server' server.id %}">Delete</a>
-            <span>@{{ server.owner.username }}</span>
-            <h4>{{ server.id }} -- <a href="{% url 'server' server.id %}"> {{ server.name }} </a></h4>
-            <small>{{ server.topic }}</small>
-            <hr>
+            {% for server in servers %}
+            
+            <div>
+                <a href="{% url 'update-server' server.id %}">Edit</a>
+                <a href="{% url 'delete-server' server.id %}">Delete</a>
+                <span>@{{ server.owner.username }}</span>
+                <h4>{{ server.id }} -- <a href="{% url 'server' server.id %}"> {{ server.name }} </a></h4>
+                <small>{{ server.topic }}</small>
+                <hr>
+            </div>
+            
+            {% endfor %}
         </div>
-        
-        {% endfor %}
     </div>
 
 </div>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Server
+from django.db.models import Q
+from .models import Server, Topic
 from .forms import ServerForm
 
 # Create your views here.
@@ -12,8 +13,17 @@ from .forms import ServerForm
 # ]
 
 def home(request):
-    servers = Server.objects.all()
-    context = {'servers' :servers}
+    nam = request.GET.get('nam') if request.GET.get('nam') != None else ''
+
+    servers = Server.objects.filter(
+        Q(topic__name__icontains = nam) |
+        Q(name__icontains = nam) |
+        Q(description__icontains = nam) 
+        ) #contains means case sensitive icontains means case INsensitive
+    
+    topics = Topic.objects.all()
+    server_count = servers.count()
+    context = {'servers' :servers, 'topics': topics, 'server_count' : server_count}
     return render(request, 'base/home.html' , context)
 
 def server(request,sid):
