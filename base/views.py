@@ -1,5 +1,10 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
 from .models import Server, Topic
 from .forms import ServerForm
 
@@ -11,6 +16,38 @@ from .forms import ServerForm
 #     {'id' : 3 , 'name' : 'Music'},
     
 # ]
+
+def loginPage(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'User does not exist')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Username Or Password is invalid')
+
+        
+
+    context = {}
+    return render(request, 'base/login_register.html',context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+
 
 def home(request):
     nam = request.GET.get('nam') if request.GET.get('nam') != None else ''
@@ -35,6 +72,8 @@ def server(request,sid):
     context = {'server': server}
     return render(request, 'base/server.html' , context)
 
+
+@login_required(login_url='login')
 def createServer(request):
     form = ServerForm()
 
@@ -48,9 +87,13 @@ def createServer(request):
     return render(request , 'base/server_form.html', context)
 
 
+@login_required(login_url='login')
 def updateServer(request, pk):
     server = Server.objects.get(id=pk)
     form = ServerForm(instance=server)
+
+    if request.user != server.owner:
+        return HttpResponse('Not authorized!')
 
     if request.method == "POST":
         form = ServerForm(request.POST, instance= server)
@@ -61,8 +104,13 @@ def updateServer(request, pk):
     context = {'form': form}
     return render(request, 'base/server_form.html', context)
 
+
+@login_required(login_url='login')
 def deleteServer(request, pk):
     server = Server.objects.get(id=pk)
+
+    if request.user != server.owner:
+        return HttpResponse('Not authorized!')
 
     if request.method == 'POST':
         server.delete()
