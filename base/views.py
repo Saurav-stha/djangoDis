@@ -157,21 +157,37 @@ def joinServer(request, pk,):
     server = Server.objects.get(id=pk)
     
     if request.user in server.members.all():
-        return HttpResponse("You are already a member of this server.")
+        return HttpResponse("You are already a member of this server.")# already checked in the file
     
     server.members.add(request.user)
     server.save()
     return redirect('server', sid = server.id)
 
 login_required(login_url='login')
-def leaveServer(request, pk,):
+def leaveServer(request, pk):
     server = Server.objects.get(id=pk)
     
     if request.user in server.members.all():
         server.members.remove(request.user)
         server.save()
     else:
-        return HttpResponse("You are not a member of this server.")
+        return HttpResponse("You are not a member of this server.") # already checked in the file
     
     return redirect('server', sid = server.id)
+
+@login_required(login_url='login')
+def deleteMsg(request, pk):
+    msg = Msg.objects.get(id=pk)
+    # server = Server.objects.get(id=pk)
+
+    if request.user != msg.user:
+        return HttpResponse('Not authorized!')
+
+    if request.method == 'POST':
+        msg.delete()
+        # return redirect('server', sid = server.id)
+        return redirect('home')
+
+    return render(request, 'base/del.html',{'obj': msg})
+
 

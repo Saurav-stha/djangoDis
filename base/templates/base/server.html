@@ -22,10 +22,14 @@
             <h3>Messages</h3>
             <hr>
             
-            {% for message in msgs %}
+            {% for msg in msgs %}
             <div>
-                <small>@{{ message.user }} {{ message.created | timesince }} ago</small> <!-- timesince is a filter to provide time from creation to current time -->
-                <p>{{ message.body }}</p>
+                {% if request.user == msg.user %}
+                <a href="{% url 'delete-msg' msg.id %}">Delete</a>
+                {% endif %}
+
+                <small>@{{ msg.user }} {{ msg.created | timesince }} ago</small> <!-- timesince is a filter to provide time from creation to current time -->
+                <p>{{ msg.body }}</p>
                 <hr>
             </div>
             {% endfor %}

@@ -14,4 +14,7 @@ urlpatterns = [
     path('leave-server/<str:pk>/' , views.leaveServer, name="leave-server"),
     path('update-server/<str:pk>/' , views.updateServer, name="update-server"),
     path('delete-server/<str:pk>/' , views.deleteServer, name="delete-server"),
+
+    path('delete-msg/<str:pk>/' , views.deleteMsg, name="delete-msg"),
+
 ]
