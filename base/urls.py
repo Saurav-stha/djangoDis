@@ -10,6 +10,8 @@ urlpatterns = [
     path('server/<str:sid>/',views.server , name="server"),
 
     path('create-server' , views.createServer, name="create-server"),
+    path('join-server/<str:pk>/' , views.joinServer, name="join-server"),
+    path('leave-server/<str:pk>/' , views.leaveServer, name="leave-server"),
     path('update-server/<str:pk>/' , views.updateServer, name="update-server"),
     path('delete-server/<str:pk>/' , views.deleteServer, name="delete-server"),
 ]

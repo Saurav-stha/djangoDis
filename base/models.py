@@ -14,7 +14,7 @@ class Server(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True , blank=True) # null for db and blank for frontend
-    # members = 
+    members = models.ManyToManyField(User, related_name='members', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -25,7 +25,7 @@ class Server(models.Model):
         return self.name
     
 
-class Msg(models.Model):
+class Msg(models.Model): # Msg written cause message is keyword in django
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     body = models.TextField()
     server = models.ForeignKey(Server, on_delete=models.CASCADE)

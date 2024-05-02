@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
-from .models import Server, Topic
+from .models import Server, Topic, Msg
 from .forms import ServerForm
 
 # Create your views here.
@@ -90,7 +90,19 @@ def server(request,sid):
     #         server = i
     server = Server.objects.get(id=sid)
 
-    context = {'server': server}
+    msgs = server.msg_set.all().order_by('-created')# msg is the Msg class in models.py
+
+    members = server.members.all()
+    if request.method == "POST":
+        msg = Msg.objects.create(
+            user = request.user,
+            server = server,
+            body = request.POST.get('body')    
+        )
+        # server.members.add(request.user)
+        return redirect('server', sid = server.id)
+
+    context = {'server': server, 'msgs': msgs, 'members': members}
     return render(request, 'base/server.html' , context)
 
 
@@ -138,3 +150,28 @@ def deleteServer(request, pk):
         return redirect('home')
 
     return render(request, 'base/del.html',{'obj': server})
+
+
+@login_required(login_url='login')
+def joinServer(request, pk,):
+    server = Server.objects.get(id=pk)
+    
+    if request.user in server.members.all():
+        return HttpResponse("You are already a member of this server.")
+    
+    server.members.add(request.user)
+    server.save()
+    return redirect('server', sid = server.id)
+
+login_required(login_url='login')
+def leaveServer(request, pk,):
+    server = Server.objects.get(id=pk)
+    
+    if request.user in server.members.all():
+        server.members.remove(request.user)
+        server.save()
+    else:
+        return HttpResponse("You are not a member of this server.")
+    
+    return redirect('server', sid = server.id)
+

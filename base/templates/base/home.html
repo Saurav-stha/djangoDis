@@ -43,8 +43,17 @@
                 <a href="{% url 'delete-server' server.id %}">Delete</a>
                 {% endif %}
 
+                
                 <span>@{{ server.owner.username }}</span>
                 <h4>{{ server.id }} -- <a href="{% url 'server' server.id %}"> {{ server.name }} </a></h4>
+
+                {% if request.user not in server.members.all %}
+                <a href="{% url 'join-server' server.id%}">Join</a>
+                {% else %}
+                <button disabled>Joined</button>
+                {% endif %}
+
+
                 <small>{{ server.topic }}</small>
                 <hr>
             </div>
