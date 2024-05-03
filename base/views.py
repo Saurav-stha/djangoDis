@@ -81,7 +81,8 @@ def home(request):
     
     topics = Topic.objects.all()
     server_count = servers.count()
-    context = {'servers' :servers, 'topics': topics, 'server_count' : server_count}
+    server_msgs = Msg.objects.filter(Q(server__topic__name__icontains = nam))
+    context = {'servers' :servers, 'topics': topics, 'server_count' : server_count, 'server_msgs':server_msgs}
     return render(request, 'base/home.html' , context)
 
 def server(request,sid):
@@ -90,7 +91,9 @@ def server(request,sid):
     #         server = i
     server = Server.objects.get(id=sid)
 
-    msgs = server.msg_set.all().order_by('-created')# msg is the Msg class in models.py
+    msgs = server.msg_set.all() # msg is the Msg class in models.py and _set means calling set function of msg class
+
+
 
     members = server.members.all()
     if request.method == "POST":
