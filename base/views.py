@@ -85,6 +85,14 @@ def home(request):
     context = {'servers' :servers, 'topics': topics, 'server_count' : server_count, 'server_msgs':server_msgs}
     return render(request, 'base/home.html' , context)
 
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    servers = user.server_set.all()
+    topics = Topic.objects.all()
+    server_msgs = user.msg_set.all()
+    context = {'user':user,'servers':servers, 'topics': topics, 'server_msgs': server_msgs}
+    return render (request, 'base/userProfile.html', context)
+
 def server(request,sid):
     # for i in servers:
     #     if i['id'] == int(sid):

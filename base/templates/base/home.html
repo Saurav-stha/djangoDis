@@ -23,46 +23,12 @@
         <h5>{{server_count}} servers found </h5>
         <a href="{% url 'create-server' %}">Create Server</a>
         
-        <div>
-            {% for server in servers %}
-            
-            <div>
-                {% if request.user == server.owner %}
-                <a href="{% url 'update-server' server.id %}">Edit</a>
-                <a href="{% url 'delete-server' server.id %}">Delete</a>
-                {% endif %}
-
-                
-                <span>@{{ server.owner.username }}</span>
-                <h4>{{ server.id }} -- <a href="{% url 'server' server.id %}">{{ server.name }}</a> </h4>
-
-                {% if request.user not in server.members.all %}
-                <a href="{% url 'join-server' server.id%}">Join</a>
-                {% else %}
-                <button disabled>Joined</button>
-                {% endif %}
-
-
-                <small>{{ server.topic }}</small>
-                <hr>
-            </div>
-            
-            {% endfor %}
-        </div>
+        {% include 'base/feed_component.html'  %}
     </div>
 
     <div>
-        <h2>Recent Activity</h2>
-        <hr>
 
-        {% for msg in server_msgs %}
-            <div>
-                <p>@{{ msg.user }} {{msg.created|timesince }}</p>
-                <small>replied to "{{ msg.server }}"</small>
-                <p>{{ msg }}</p>
-                <hr>
-            </div>
-        {% endfor %}
+        {% include 'base/activity_component.html' %}
     </div>
 
 </div>
