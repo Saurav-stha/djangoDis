@@ -14,9 +14,9 @@ Completed:
 - Admin and Dashboard
 - Members create and display
 - Authentication and authorization
-
-To do:
 - Activity Feed
 - User Profile CRUD
-- Static Files
-- Frontend
+
+To do:
+- Static Files (half/half)
+- Frontend(halfway)
