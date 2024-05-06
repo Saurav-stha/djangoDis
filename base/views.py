@@ -90,7 +90,8 @@ def userProfile(request, pk):
     servers = user.server_set.all()
     topics = Topic.objects.all()
     server_msgs = user.msg_set.all()
-    context = {'user':user,'servers':servers, 'topics': topics, 'server_msgs': server_msgs}
+    server_count = Server.objects.all().count()
+    context = {'user':user,'servers':servers, 'topics': topics, 'server_msgs': server_msgs,'server_count': server_count}
     return render (request, 'base/profile.html', context)
 
 def server(request,sid):
