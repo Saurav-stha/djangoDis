@@ -91,7 +91,7 @@ def userProfile(request, pk):
     topics = Topic.objects.all()
     server_msgs = user.msg_set.all()
     context = {'user':user,'servers':servers, 'topics': topics, 'server_msgs': server_msgs}
-    return render (request, 'base/userProfile.html', context)
+    return render (request, 'base/profile.html', context)
 
 def server(request,sid):
     # for i in servers:
@@ -124,6 +124,8 @@ def createServer(request):
     if request.method == 'POST':
         form = ServerForm(request.POST)
         if form.is_valid():
+            server = form.save(commit=False)
+            server.owner = request.user
             form.save()
             return redirect('home')
         
