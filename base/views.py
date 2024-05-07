@@ -102,8 +102,6 @@ def server(request,sid):
 
     msgs = server.msg_set.all() # msg is the Msg class in models.py and _set means calling set function of msg class
 
-
-
     members = server.members.all()
     if request.method == "POST":
         msg = Msg.objects.create(
@@ -121,16 +119,21 @@ def server(request,sid):
 @login_required(login_url='login')
 def createServer(request):
     form = ServerForm()
+    topics = Topic.objects.all()
 
     if request.method == 'POST':
-        form = ServerForm(request.POST)
-        if form.is_valid():
-            server = form.save(commit=False)
-            server.owner = request.user
-            form.save()
-            return redirect('home')
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+
+        Server.objects.create(
+            owner = request.user,
+            topic= topic,
+            name = request.POST.get('server_name'),
+            description = request.POST.get('server_description')
+        )
+        return redirect('home')
         
-    context = {'form' : form}
+    context = {'form' : form, 'topics': topics}
     return render(request , 'base/server_form.html', context)
 
 
@@ -138,17 +141,19 @@ def createServer(request):
 def updateServer(request, pk):
     server = Server.objects.get(id=pk)
     form = ServerForm(instance=server)
+    topics = Topic.objects.all()
 
     if request.user != server.owner:
         return HttpResponse('Not authorized!')
 
     if request.method == "POST":
         form = ServerForm(request.POST, instance= server)
+
         if form.is_valid():
             form.save()
             return redirect('home')
 
-    context = {'form': form}
+    context = {'form': form, 'topics':topics, 'server': server}
     return render(request, 'base/server_form.html', context)
 
 
