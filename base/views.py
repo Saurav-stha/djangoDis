@@ -212,4 +212,7 @@ def deleteMsg(request, pk):
 
     return render(request, 'base/del.html',{'obj': msg})
 
+@login_required(login_url='login')
+def updateUser(request):
 
+    return render(request, 'base/update_user.html')
