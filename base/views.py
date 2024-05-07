@@ -122,7 +122,7 @@ def createServer(request):
     topics = Topic.objects.all()
 
     if request.method == 'POST':
-        topic_name = request.POST.get('topic')
+        topic_name = request.POST.get('server_topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
 
         Server.objects.create(
@@ -147,11 +147,14 @@ def updateServer(request, pk):
         return HttpResponse('Not authorized!')
 
     if request.method == "POST":
-        form = ServerForm(request.POST, instance= server)
-
-        if form.is_valid():
-            form.save()
-            return redirect('home')
+        topic_name = request.POST.get('server_topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        server.name = request.POST.get('server_name')
+        server.topic = topic
+        server.description = request.POST.get('server_description')
+        server.save()
+        
+        return redirect('home')
 
     context = {'form': form, 'topics':topics, 'server': server}
     return render(request, 'base/server_form.html', context)
