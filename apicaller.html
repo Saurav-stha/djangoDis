@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <H1>THIS IS THE API CALLING WEBSITE</H1>
+
+    <h2>Server List:</h2>
+    <div id="server_container"></div>
+
+
+    <script>
+        let serversContainer = document.getElementById('server_container')
+
+        let getServers = async () => {
+            let response = await fetch('http://127.0.0.1:8000/api/servers/')
+            let servers = await response.json()
+            // console.log("RESPONSE IS ....:: ", servers)
+
+            for(i=0; servers.length >i; i++){
+                let server = servers[i]
+                let row = `
+                <div>
+                    <h3>${server.name}</h3>
+                    <hr>
+                </div>
+                `
+
+                serversContainer.innerHTML += row
+            }
+        }
+
+        getServers()
+
+    </script>
+</body>
+</html>
