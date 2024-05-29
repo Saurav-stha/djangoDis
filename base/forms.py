@@ -1,6 +1,13 @@
 from django.forms import ModelForm
-from .models import Server
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from .models import Server, User
+
+
+class MyUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['name','username', 'email', 'password1', 'password2','avatar']
+
 
 class ServerForm(ModelForm):
     class Meta:
@@ -12,4 +19,4 @@ class ServerForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username','email']
+        fields = ['name','username','email','avatar','bio']
