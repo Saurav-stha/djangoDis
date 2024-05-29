@@ -1,5 +1,6 @@
 Completed:
-- login signup
+- authentication(login/register)
+- authorization(delete/update own msg/servers)
 - CRUD server
     - create
     - join
@@ -16,7 +17,9 @@ Completed:
 - Authentication and authorization
 - Activity Feed
 - User Profile CRUD
-
-To do:
-- Static Files (half/half)
-- Frontend(halfway)
+- Static Files
+- Frontend
+- avatar(img) input
+- customer user model
+- flash message
+- API call allowed to all origins(using cor headers and django rest framework)
