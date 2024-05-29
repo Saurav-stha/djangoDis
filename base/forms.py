@@ -6,7 +6,7 @@ from .models import Server, User
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['name','username', 'email', 'password1', 'password2','avatar']
+        fields = ['name','username', 'email', 'password1', 'password2','avatar','bio']
 
 
 class ServerForm(ModelForm):
