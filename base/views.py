@@ -79,10 +79,11 @@ def home(request):
         Q(description__icontains = nam) 
         ) #contains means case sensitive icontains means case INsensitive
     
+    topics_count = Topic.objects.all().count()
     topics = Topic.objects.all()[0:4] # limit 4 display of topics in homepage
     server_count = servers.count()
     server_msgs = Msg.objects.filter(Q(server__topic__name__icontains = nam))
-    context = {'servers' :servers, 'topics': topics, 'server_count' : server_count, 'server_msgs':server_msgs}
+    context = {'servers' :servers, 'topics': topics, 'server_count' : server_count, 'server_msgs':server_msgs, 'topics_count': topics_count}
     return render(request, 'base/home.html' , context)
 
 def userProfile(request, pk):
@@ -229,18 +230,9 @@ def updateUser(request):
 def topicsPage(request):
     nam = request.GET.get('nam') if request.GET.get('nam') != None else ''
 
-    servers = Server.objects.filter(
-        Q(topic__name__icontains = nam) |
-        Q(name__icontains = nam) |
-        Q(description__icontains = nam)
-    )
-
     topics = Topic.objects.filter(name__icontains = nam)
-    server_count = servers.count()
 
-    context = {'servers': servers, 'topics' : topics, 'server_count' : server_count}
-
-    return render(request, 'base/topics.html', context)
+    return render(request, 'base/topics.html', {'topics' : topics})
 
 
 def activityPage(request):
