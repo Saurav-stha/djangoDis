@@ -96,7 +96,7 @@
                     <div class="thread__author">
                       <a href="{% url 'user-profile' msg.user.id %}" class="thread__authorInfo">
                         <div class="avatar avatar--small">
-                          <img src="{{ server.owner.avatar.url }}" />
+                          <img src="{{ msg.user.avatar.url }}" />
                         </div>
                         <span>@{{ msg.user }}</span>
                       </a>
@@ -156,7 +156,7 @@
 
             <a href="{% url 'user-profile' user.id %}" class="participant">
               <div class="avatar avatar--medium">
-                <img src="{{ server.owner.avatar.url }}" />
+                <img src="{{ member.avatar.url }}" />
               </div>
               <p>
                 {{ member.username }}

@@ -13,15 +13,6 @@
   <body>
     
     {% include 'nav.html' %}
-    {% if msgs %}
-    <ul class="messages">
-        {% for message in server_msgs %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    <!-- <img src="{% static 'img/ss.png' %}" alt="" srcset=""> -->
 
     {% block content %}
 
